@@ -8,7 +8,7 @@ class Program
         unsafe
         {
             Application.Init();
-            ListaUsuarios lista = new ListaUsuarios();
+            ListaUsuarios listaUsuarios = new ListaUsuarios();
             ListaDoble listaVehiculos = new ListaDoble();
             ListaCircular listaRepuesto = new ListaCircular();
 
@@ -24,7 +24,7 @@ class Program
 
             // Mostrar usuarios después de la carga
             Console.WriteLine("\nMostrando Usuarios");
-            lista.MostrarUsuarios();
+            listaUsuarios.MostrarUsuarios();
             Console.WriteLine("\nMostrando Vehiculos");
             listaVehiculos.MostrarVehiculos();
             Console.WriteLine("\nMostrando Repuestos");

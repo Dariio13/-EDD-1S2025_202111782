@@ -22,3 +22,4 @@
 /home/dariiott/EDDProyecto_Fase1/bin/Debug/net8.0/GLibSharp.dll
 /home/dariiott/EDDProyecto_Fase1/bin/Debug/net8.0/GtkSharp.dll
 /home/dariiott/EDDProyecto_Fase1/bin/Debug/net8.0/PangoSharp.dll
+/home/dariiott/EDDProyecto_Fase1/obj/Debug/net8.0/Programa.sourcelink.json

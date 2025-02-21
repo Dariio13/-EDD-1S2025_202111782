@@ -52,10 +52,11 @@ public class IniciarSesion : Window
             Console.WriteLine("Inicio de sesión exitoso");
 
             // Crear una lista de usuarios antes de abrir el menú
-            ListaUsuarios lista = new ListaUsuarios();
+            ListaUsuarios listaUsuarios = new ListaUsuarios();
+            ListaDoble listaVehiculos = new ListaDoble();
 
             // Pasar la lista al menú
-            Menu interface2 = new Menu();
+            Menu interface2 = new Menu(listaUsuarios, listaVehiculos);
             interface2.ShowAll();
             this.Hide(); // Ocultar la ventana de inicio de sesión
         }

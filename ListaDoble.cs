@@ -40,6 +40,12 @@ public class ListaDoble
         cola = null;
     }
 
+    public NodoDoble ObtenerCabeza()
+    {
+        return cabeza;
+    }
+
+
     // Agregar vehículo al final de la lista
     public void Agregar(Vehiculo vehiculo)
     {

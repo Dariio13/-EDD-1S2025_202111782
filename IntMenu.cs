@@ -4,9 +4,14 @@ using System;
 public class Menu : Window
 {
     private ListBox listBox;
+    //private IngresoManual ingresoManual1;
+    private ListaUsuarios listaUsuarios;
+    private ListaDoble listaVehiculos;
 
-    public Menu() : base("Menú")
+    public Menu(ListaUsuarios listaUsuarios, ListaDoble listaVehiculos) : base("Menú")
     {
+        this.listaUsuarios = listaUsuarios; // Usar la lista pasada en el constructor
+        this.listaVehiculos = listaVehiculos;
         SetDefaultSize(300, 200);
         SetPosition(WindowPosition.Center);
 
@@ -41,7 +46,7 @@ public class Menu : Window
     // Métodos de eventos para los botones (puedes personalizar la lógica)
     private void OnCargasMasivasClicked(object sender, EventArgs e)
     {
-        CargasMasivas cargasMasivas = new CargasMasivas();
+        CargasMasivas cargasMasivas = new CargasMasivas(listaUsuarios);
         cargasMasivas.ShowAll();
         this.Hide();
         Console.WriteLine("Cargas Masivas seleccionado");
@@ -49,11 +54,17 @@ public class Menu : Window
 
     private void OnIngresoIndividualClicked(object sender, EventArgs e)
     {
+        IngresoManual ingresoManual = new IngresoManual(listaUsuarios, listaVehiculos);
+        this.Hide();
+        ingresoManual.Show();
         Console.WriteLine("Ingreso Individual seleccionado");
     }
 
     private void OnGestionUsuariosClicked(object sender, EventArgs e)
     {
+        GestionUsuarios gestionUsuarios = new GestionUsuarios(listaUsuarios, listaVehiculos);
+        this.Hide();
+        gestionUsuarios.Show();
         Console.WriteLine("Gestión de Usuarios seleccionado");
     }
 

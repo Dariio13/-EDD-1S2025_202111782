@@ -7,12 +7,13 @@ using System.Collections.Generic;
 public class CargasMasivas : Window
 {
     private ComboBoxText comboBox;
-    private ListaUsuarios listaUsuarios;  // Instancia de la lista enlazada
+    private ListaUsuarios listaUsuarios;  
     private ListaDoble listaVehiculos;
     private ListaCircular listaRepuestos;
 
-    public CargasMasivas() : base("Cargas Masivas")
+    public CargasMasivas(ListaUsuarios listaUsuarios) : base("Cargas Masivas")
     {
+        this.listaUsuarios = listaUsuarios;
         SetDefaultSize(300, 200);
         SetPosition(WindowPosition.Center);
 
@@ -178,7 +179,8 @@ public class CargasMasivas : Window
     // Evento para el botón "Regresar"
     private void OnRegresarClicked(object sender, EventArgs e)
     {
-        Menu menu = new Menu();
+        //IngresoManual ingresoManual = new IngresoManual(listaUsuarios);
+        Menu menu = new Menu(listaUsuarios, listaVehiculos);
         menu.ShowAll();
         this.Hide();
     }
