@@ -1,3 +1,4 @@
+using Estructuras;
 using Gtk;
 using System;
 
@@ -7,11 +8,17 @@ public class GestionUsuarios : Window
     private Button verButton, editarButton, eliminarButton, regresarButton;
     private ListaUsuarios listaUsuarios;
     private ListaDoble listaVehiculos;
+    private ListaCircular listaRepuestos;
+    private Pila pilaServicios;
+    private Cola colaServicios;
 
-    public GestionUsuarios(ListaUsuarios listaUsuarios, ListaDoble listaVehiculos) : base("Gestión de Usuarios")
+    public GestionUsuarios(ListaUsuarios listaUsuarios, ListaDoble listaVehiculos, ListaCircular listaRepuestos, Pila pilaServicios, Cola colaServicios) : base("Gestión de Usuarios")
     {
         this.listaUsuarios = listaUsuarios;
         this.listaVehiculos = listaVehiculos;
+        this.listaRepuestos = listaRepuestos;
+        this.pilaServicios = pilaServicios;
+        this.colaServicios = colaServicios;
         SetDefaultSize(400, 300);
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { Application.Quit(); };
@@ -118,7 +125,7 @@ public class GestionUsuarios : Window
 
     private void OnRegresarClicked(object sender, EventArgs e)
     {
-        Menu menu = new Menu(listaUsuarios, listaVehiculos);
+        Menu menu = new Menu(listaUsuarios, listaVehiculos, listaRepuestos, pilaServicios, colaServicios);
         menu.ShowAll();
         this.Hide();
     }

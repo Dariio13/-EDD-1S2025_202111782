@@ -1,3 +1,4 @@
+using Estructuras;
 using Gtk;
 using System;
 
@@ -7,11 +8,17 @@ public class IngresoManual : Window
     private Button guardarButton;
     private ListaUsuarios listaUsuarios;
     private ListaDoble listaVehiculos;
+    private ListaCircular listaRepuestos;
+    private Pila pilaServicios;
+    private Cola colaServicios;
 
-    public IngresoManual(ListaUsuarios listaUsuarios, ListaDoble listaVehiculos) : base("Ingreso Manual")
+    public IngresoManual(ListaUsuarios listaUsuarios, ListaDoble listaVehiculos, ListaCircular listaRepuestos, Pila pilaServicios, Cola colaServicios) : base("Ingreso Manual")
     {
         this.listaUsuarios = listaUsuarios;
-        this.listaVehiculos = listaVehiculos;   
+        this.listaVehiculos = listaVehiculos;  
+        this.listaRepuestos = listaRepuestos;
+        this.pilaServicios = pilaServicios;
+        this.colaServicios = colaServicios;
         SetDefaultSize(300, 250);
         SetPosition(WindowPosition.Center);
         DeleteEvent += delegate { Application.Quit(); };
@@ -81,7 +88,7 @@ public class IngresoManual : Window
 
         private void OnRegresarClicked(object sender, EventArgs e)
     {
-        Menu menu = new Menu(listaUsuarios, listaVehiculos);
+        Menu menu = new Menu(listaUsuarios, listaVehiculos, listaRepuestos, pilaServicios, colaServicios);
         menu.ShowAll();
         this.Hide();
     }

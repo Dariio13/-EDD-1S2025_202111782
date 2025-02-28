@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
-//Clase Usuario
+// Clase Usuario
 public class Usuario
 {
     public int ID { get; set; }
@@ -25,8 +26,6 @@ public class NodoSimple
     }
 }
 
-
-
 // ListaSimple
 public class ListaUsuarios
 {
@@ -37,7 +36,7 @@ public class ListaUsuarios
         cabeza = null;
     }
 
-    //Agregar ususario
+    // Agregar usuario
     public void Agregar(Usuario usuario)
     {
         NodoSimple nuevoNodo = new NodoSimple(usuario);
@@ -56,7 +55,7 @@ public class ListaUsuarios
         }
     }
 
-    //Mostrar usuario
+    // Mostrar usuario
     public void MostrarUsuarios()
     {
         NodoSimple actual = cabeza;
@@ -67,7 +66,7 @@ public class ListaUsuarios
         }
     }
 
-    //Carga masiva de usuarios
+    // Carga masiva de usuarios
     public void CargarDesdeJson(string rutaArchivo)
     {
         if (File.Exists(rutaArchivo))
@@ -98,7 +97,6 @@ public class ListaUsuarios
                 Console.WriteLine($"Correo: {actual.Datos.Correo}");
                 Console.WriteLine("Vehículos del usuario:");
 
-                // Buscar los vehículos del usuario en la lista doblemente enlazada
                 NodoDoble vehiculoActual = listaVehiculos.ObtenerCabeza();
                 bool tieneVehiculos = false;
 
@@ -123,7 +121,6 @@ public class ListaUsuarios
         }
         Console.WriteLine("Usuario no encontrado.");
     }
-
 
     // Editar usuario
     public void EditarUsuario(int id, string nuevosNombres, string nuevosApellidos, string nuevoCorreo)
@@ -173,5 +170,70 @@ public class ListaUsuarios
         }
 
         Console.WriteLine("Usuario no encontrado.");
+    }
+
+    // Generar Graphviz para la lista
+    public void GenerarGraphviz(string rutaArchivo)
+    {
+        if (cabeza == null)
+        {
+            Console.WriteLine("La lista está vacía.");
+            return;
+        }
+
+        // Crear el código DOT
+        string dotCode = "digraph ListaUsuarios {\n";
+        NodoSimple actual = cabeza;
+        while (actual != null)
+        {
+            // Nodo para el usuario
+            dotCode += $"  {actual.Datos.ID} [label=\"ID: {actual.Datos.ID}\n Nombre: {actual.Datos.Nombres} {actual.Datos.Apellidos}\n Correo: {actual.Datos.Correo}\"];\n";
+
+            // Enlace al siguiente nodo
+            if (actual.Siguiente != null)
+            {
+                dotCode += $"  {actual.Datos.ID} -> {actual.Siguiente.Datos.ID};\n";
+            }
+
+            actual = actual.Siguiente;
+        }
+        dotCode += "}\n";
+
+        // Guardar el código DOT en un archivo
+        try
+        {
+            File.WriteAllText(rutaArchivo, dotCode);
+            Console.WriteLine("Archivo DOT generado correctamente.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al guardar el archivo: {ex.Message}");
+        }
+    }
+
+    // Generar la imagen a partir del archivo DOT
+    public void GenerarImagenGraphviz(string rutaArchivoDot, string rutaImagen)
+    {
+        try
+        {
+            ProcessStartInfo proceso = new ProcessStartInfo
+            {
+                FileName = "dot",
+                Arguments = $"-Tpng {rutaArchivoDot} -o {rutaImagen}",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process p = Process.Start(proceso))
+            {
+                p.WaitForExit();
+                Console.WriteLine("Imagen generada correctamente.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al generar la imagen: {ex.Message}");
+        }
     }
 }

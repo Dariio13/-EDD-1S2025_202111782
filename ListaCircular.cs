@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System.Diagnostics;
+using Estructuras;
+
 
 // Clase Repuesto que contiene los datos de cada repuesto
 public class Repuesto
@@ -36,6 +39,13 @@ public class ListaCircular
         cabeza = null;
         ultimo = null;
     }
+
+    // Método público para obtener la cabeza
+    public NodoCircular ObtenerCabeza()
+    {
+        return cabeza;
+    }
+
 
     // Agregar un repuesto a la lista
     public void Agregar(Repuesto repuesto)
@@ -92,4 +102,95 @@ public class ListaCircular
             Console.WriteLine("El archivo JSON no existe.");
         }
     }
+
+    // Generar Graphviz para la lista circular
+    public void GenerarGraphviz(string rutaArchivo)
+    {
+        if (cabeza == null)
+        {
+            Console.WriteLine("La lista está vacía.");
+            return;
+        }
+
+        // Crear el código DOT
+        string dotCode = "digraph ListaRepuestos {\n";
+        dotCode += "  rankdir=LR;\n";  // Para que los nodos se organicen de forma horizontal
+
+        NodoCircular actual = cabeza;
+        do
+        {
+            // Nodo para el repuesto
+            dotCode += $"  {actual.Datos.ID} [label=\"ID: {actual.Datos.ID}\n Repuesto: {actual.Datos.Repuestos}\n Detalles: {actual.Datos.Detalles}\n Costo: {actual.Datos.Costo} \"];\n";
+
+            // Enlace al siguiente nodo (flecha del nodo actual al siguiente)
+            if (actual.Siguiente != cabeza)  // Solo agregamos enlace si no estamos en el último nodo
+            {
+                dotCode += $"  {actual.Datos.ID} -> {actual.Siguiente.Datos.ID};\n";
+            }
+
+            actual = actual.Siguiente;
+        } while (actual != cabeza);  // Detenemos cuando llegamos al primer nodo
+
+        // Cerrar el ciclo (hacer que el último nodo apunte al primero)
+        dotCode += $"  {ultimo.Datos.ID} -> {cabeza.Datos.ID};\n";
+
+        dotCode += "}\n";
+
+        // Guardar el código DOT en un archivo
+        try
+        {
+            File.WriteAllText(rutaArchivo, dotCode);
+            Console.WriteLine("Archivo DOT generado correctamente.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al guardar el archivo: {ex.Message}");
+        }
+    }
+
+    // Generar la imagen a partir del archivo DOT
+    public void GenerarImagenGraphviz(string nombreArchivoDot, string nombreImagen)
+    {
+        try
+        {
+            // Comando para generar la imagen con Graphviz
+            string comando = $"dot -Tpng {nombreArchivoDot} -o {nombreImagen}";
+
+            // Crear proceso para ejecutar el comando
+            ProcessStartInfo procesoInfo = new ProcessStartInfo("/bin/bash", $"-c \"{comando}\"")
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process proceso = new Process { StartInfo = procesoInfo })
+            {
+                proceso.Start();
+                proceso.WaitForExit();
+
+                // Leer salida y errores si los hay
+                string salida = proceso.StandardOutput.ReadToEnd();
+                string error = proceso.StandardError.ReadToEnd();
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Console.WriteLine($"Error al generar la imagen: {error}");
+                }
+                else
+                {
+                    Console.WriteLine("Imagen generada correctamente.");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error en el proceso de generación de imagen: {ex.Message}");
+        }
+    }
+
+
 }
+
+

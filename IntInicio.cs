@@ -1,3 +1,4 @@
+using Estructuras;
 using Gtk;
 using System;
 
@@ -54,9 +55,12 @@ public class IniciarSesion : Window
             // Crear una lista de usuarios antes de abrir el menú
             ListaUsuarios listaUsuarios = new ListaUsuarios();
             ListaDoble listaVehiculos = new ListaDoble();
+            ListaCircular listaRepuestos = new ListaCircular();
+            Pila pilaServicios = new Pila();
+            Cola colaServicios = new Cola();
 
             // Pasar la lista al menú
-            Menu interface2 = new Menu(listaUsuarios, listaVehiculos);
+            Menu interface2 = new Menu(listaUsuarios, listaVehiculos, listaRepuestos, pilaServicios, colaServicios);
             interface2.ShowAll();
             this.Hide(); // Ocultar la ventana de inicio de sesión
         }

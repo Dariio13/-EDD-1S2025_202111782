@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Estructuras;
+
 
 public class CargasMasivas : Window
 {
@@ -10,6 +12,8 @@ public class CargasMasivas : Window
     private ListaUsuarios listaUsuarios;  
     private ListaDoble listaVehiculos;
     private ListaCircular listaRepuestos;
+    private Pila pilaServicios;
+    private Cola colaServicios;
 
     public CargasMasivas(ListaUsuarios listaUsuarios) : base("Cargas Masivas")
     {
@@ -21,6 +25,8 @@ public class CargasMasivas : Window
         listaUsuarios = new ListaUsuarios();
         listaVehiculos = new ListaDoble();
         listaRepuestos = new ListaCircular();
+        pilaServicios = new Pila();
+        colaServicios = new Cola();
 
         // Contenedor principal (Box con orientación vertical)
         Box vbox = new Box(Orientation.Vertical, 10);
@@ -180,7 +186,7 @@ public class CargasMasivas : Window
     private void OnRegresarClicked(object sender, EventArgs e)
     {
         //IngresoManual ingresoManual = new IngresoManual(listaUsuarios);
-        Menu menu = new Menu(listaUsuarios, listaVehiculos);
+        Menu menu = new Menu(listaUsuarios, listaVehiculos, listaRepuestos, pilaServicios, colaServicios);
         menu.ShowAll();
         this.Hide();
     }
